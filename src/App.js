@@ -8,6 +8,7 @@ import ContactUsPage from './pages/ContactUsPage';
 import ResumePage from './pages/services/ResumePage';
 import ChattingPage from './pages/services/ChattingPage';
 import CoverLetterPage from './pages/services/CoverLetterPage';
+import ResumeTryPage from './pages/services/ResumeTryPage';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/resume-evaluation" element={<ResumePage />} />
         <Route path="/chatting" element={<ChattingPage />} />
         <Route path="/cover-letter-evaluation" element={<CoverLetterPage />} />
+        <Route path="/resume-evaluation/try" element={<ResumeTryPage />} />
       </Routes>
     </Router>
   );
