@@ -1,4 +1,5 @@
 import { Box, Heading, Text, Button, SimpleGrid, Image } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
 import Footer from '../components/Footer';
 
 const LandingPage = () => (
@@ -37,7 +38,9 @@ const LandingPage = () => (
           <Image src="/assets/images/cv_service.svg" boxSize="100px" mx="auto" mb={4} />
           <Heading size="md" mb={2}>Resume Evaluation</Heading>
           <Text color="gray.600" mb={4}>Fast, reliable, CV Evaluation.</Text>
-          <Button colorScheme="brand" size="sm">Learn More</Button>
+          <Button as={RouterLink} to="/resume-evaluation" colorScheme="brand" size="sm">
+            Learn More
+          </Button>
         </Box>
 
         {/* Service 2 */}
@@ -52,7 +55,9 @@ const LandingPage = () => (
           <Image src="/assets/images/chatting_service.svg" boxSize="100px" mx="auto" mb={4} />
           <Heading size="md" mb={2}>Chatting</Heading>
           <Text color="gray.600" mb={4}>Designed for helping you to know your University.</Text>
-          <Button colorScheme="brand" size="sm">Learn More</Button>
+          <Button as={RouterLink} to="/chatting" colorScheme="brand" size="sm">
+            Learn More
+          </Button>
         </Box>
 
         {/* Service 3 */}
@@ -67,7 +72,9 @@ const LandingPage = () => (
           <Image src="/assets/images/cl_service.svg" boxSize="100px" mx="auto" mb={4} />
           <Heading size="md" mb={2}>Cover Letter Evaluation</Heading>
           <Text color="gray.600" mb={4}>Scalable and flexible Cover Letter Evaluation.</Text>
-          <Button colorScheme="brand" size="sm">Learn More</Button>
+          <Button as={RouterLink} to="/cover-letter-evaluation" colorScheme="brand" size="sm">
+            Learn More
+          </Button>
         </Box>
       </SimpleGrid>
     </Box>
