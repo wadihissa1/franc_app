@@ -74,7 +74,7 @@ const ChattingPage = () => (
 
         <Button
           as={RouterLink}
-          to="/chat"
+          to="/chat-franc"
           colorScheme="brand"
           size="md"
         >
@@ -152,7 +152,7 @@ const ChattingPage = () => (
       </Text>
       <Button
         as={RouterLink}
-        to="/chat"
+        to="/chat-franc"
         size="lg"
         colorScheme="whiteAlpha"
         bg="white"
