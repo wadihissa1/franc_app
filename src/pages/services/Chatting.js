@@ -36,7 +36,9 @@ const Chatting = () => {
     { text: 'Hello! How can I help you today?', sender: 'bot' },
   ]);
   const [input, setInput] = useState('');
-  const bottomRef = useRef();
+  const messagesEndRef = useRef();
+  const messagesContainerRef = useRef();
+
 
   const handleSend = () => {
     if (!input.trim()) return;
@@ -44,7 +46,6 @@ const Chatting = () => {
     setMessages(newMessages);
     setInput('');
 
-    // Simulate bot response
     setTimeout(() => {
       setMessages((prev) => [
         ...prev,
@@ -57,78 +58,81 @@ const Chatting = () => {
   };
 
   useEffect(() => {
-    bottomRef.current?.scrollTo({
-      top: bottomRef.current.scrollHeight,
-      behavior: 'smooth',
-    });
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
   }, [messages]);
-  
 
   return (
+  <Box
+    minH="100vh"
+    display="flex"
+    flexDirection="column"
+    bgGradient="linear(to-r, white, #ebf8ff)"
+    overflow="hidden"
+  >
+    {/* Chat card container */}
     <Box
-      minH="100vh"
-      bgGradient="linear(to-r, white, #ebf8ff)"
+      w="100%"
+      maxW="800px"
+      mx="auto"
+      bg="white"
+      mt={6}
+      p={6}
+      borderRadius="xl"
+      boxShadow="lg"
+      flexShrink={0}
+      height="calc(100vh - 100px)" // subtract navbar height (adjust if needed)
       display="flex"
       flexDirection="column"
-      justifyContent="space-between"
-      px={4}
-      py={6}
+      overflow="hidden"
     >
-      <Box
-        w="100%"
-        maxW="800px"
-        mx="auto"
-        bg="white"
-        p={6}
-        borderRadius="xl"
-        boxShadow="lg"
+      {/* Messages area */}
+      <VStack
+        spacing={3}
+        align="stretch"
         flex="1"
-        display="flex"
-        flexDirection="column"
+        overflowY="auto"
+        pr={2}
+        ref={messagesContainerRef} 
       >
-<VStack
-  spacing={3}
-  align="stretch"
-  overflowY="auto"
-  flex="1"
-  maxH="70vh"
-  pr={2}
-  ref={bottomRef}
->
-  {messages.map((msg, idx) => (
-    <ChatBubble key={idx} message={msg.text} isUser={msg.sender === 'user'} />
-  ))}
-</VStack>
+        {messages.map((msg, idx) => (
+          <ChatBubble key={idx} message={msg.text} isUser={msg.sender === 'user'} />
+        ))}
+        <div ref={messagesEndRef} />
+      </VStack>
 
+      {/* Input area */}
+      <HStack mt={4} spacing={3} align="flex-end">
+        <Input
+          placeholder="Type your message..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+          bg="gray.50"
+          borderRadius="full"
+          flex="1"
+          h="45px"
+          px={4}
+          fontSize="md"
+        />
+        <IconButton
+          icon={<ArrowForwardIcon />}
+          colorScheme="brand"
+          onClick={handleSend}
+          borderRadius="full"
+          aria-label="Send"
+          h="50px"
+          minW="50px"
+        />
+      </HStack>
+    </Box>
 
-    <HStack mt={8} spacing={3} align="flex-end">
-    <Input
-        placeholder="Type your message..."
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-        bg="gray.50"
-        borderRadius="full"
-        flex="1"
-        h="45px" // Makes the input taller
-        px={4}
-        fontSize="md"
-    />
-    <IconButton
-        icon={<ArrowForwardIcon />}
-        colorScheme="brand"
-        onClick={handleSend}
-        borderRadius="full"
-        aria-label="Send"
-        h="50px" // Match the input height
-        minW="50px"
-    />
-    </HStack>
-
-      </Box>
-
+    {/* Footer */}
+    <Box flexShrink={0} mt={6}>
       <Footer />
     </Box>
+  </Box>
   );
 };
 

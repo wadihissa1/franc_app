@@ -9,8 +9,9 @@ import {
     Stack,
     Text,
   } from '@chakra-ui/react';
-  
-  const HeroSection = () => {
+import { Link as RouterLink } from 'react-router-dom';
+ 
+  const HeroSection = ( { onGetStartedClick } ) => {
     return (
       <Box py={{ base: 16, md: 28 }} px={6} bg="gray.100">
         <Container maxW="6xl">
@@ -45,6 +46,7 @@ import {
                 justify={{ base: 'center', md: 'flex-start' }}
               >
                 <Button
+                  onClick={onGetStartedClick}
                   colorScheme="brand"
                   bg="brand.500"
                   rounded="full"
@@ -53,7 +55,7 @@ import {
                 >
                   Get Started
                 </Button>
-                <Button variant="link" colorScheme="gray" size="sm">
+                <Button as={RouterLink} to="/franc" variant="link" colorScheme="gray" size="sm">
                   Learn more
                 </Button>
               </Stack>
@@ -65,7 +67,7 @@ import {
                 src="/assets/images/franc_avatar.jpg"
                 alt="Franc Avatar"
                 boxSize={{ base: '150px', md: '400px' }}
-                borderRadius="md"
+                borderRadius="full"
                 mx="auto"
                 objectFit="cover"
               />
