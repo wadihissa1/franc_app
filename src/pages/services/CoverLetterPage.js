@@ -75,7 +75,7 @@ const CoverLetterPage = () => (
 
         <Button
           as={RouterLink}
-          to="/resume-evaluation/try"
+          to="/cover-letter-evaluation/try"
           colorScheme="brand"
           size="md"
         >
@@ -159,7 +159,7 @@ const CoverLetterPage = () => (
     </Text>
     <Button
         as={RouterLink}
-        to="/resume-evaluation/try"
+        to="/cover-letter-evaluation/try"
         size="lg"
         colorScheme="whiteAlpha"
         bg="white"

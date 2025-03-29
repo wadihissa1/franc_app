@@ -16,8 +16,8 @@ const theme = extendTheme({
     },
   },
   fonts: {
-    heading: 'Poppins, sans-serif',
-    body: 'Poppins, sans-serif',
+    heading: `'Lexend Deca', sans-serif`,
+    body: `'Lexend Deca', sans-serif`,
   },
 });
 

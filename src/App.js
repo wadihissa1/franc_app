@@ -9,6 +9,8 @@ import ResumePage from './pages/services/ResumePage';
 import ChattingPage from './pages/services/ChattingPage';
 import CoverLetterPage from './pages/services/CoverLetterPage';
 import ResumeTryPage from './pages/services/ResumeTryPage';
+import CoverTryPage from './pages/services/CoverTryPage';
+import Chatting from './pages/services/Chatting';
 
 const App = () => {
   return (
@@ -23,6 +25,8 @@ const App = () => {
         <Route path="/chatting" element={<ChattingPage />} />
         <Route path="/cover-letter-evaluation" element={<CoverLetterPage />} />
         <Route path="/resume-evaluation/try" element={<ResumeTryPage />} />
+        <Route path="/cover-letter-evaluation/try" element={<CoverTryPage />} />
+        <Route path="/chat-franc" element={<Chatting />} />
       </Routes>
     </Router>
   );

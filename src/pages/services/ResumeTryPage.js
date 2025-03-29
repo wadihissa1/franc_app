@@ -1,107 +1,131 @@
+'use client';
+
 import {
-    Box,
-    Heading,
-    Text,
-    Button,
-    Input,
-    VStack,
-    Icon,
-    FormLabel,
-    useToast,
-    Image,
-    Flex,
-  } from '@chakra-ui/react';
-  import { useRef, useState } from 'react';
-  import { AttachmentIcon } from '@chakra-ui/icons';
-  import Footer from '../../components/Footer';
-  
-  const ResumeTryPage = () => {
-    const inputRef = useRef(null);
-    const toast = useToast();
-    const [fileName, setFileName] = useState(null);
-  
-    const handleFileChange = (e) => {
-      const file = e.target.files[0];
-      if (file && file.type !== 'application/pdf') {
-        toast({
-          title: 'Invalid file type',
-          description: 'Only PDF files are allowed.',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        });
-        e.target.value = null;
-        setFileName(null);
-      } else {
-        setFileName(file.name);
-      }
-    };
-  
-    return (
-      <Box
-        minH="100vh"
-        bgGradient="linear(to-r, white, #ebf8ff)"
-        display="flex"
-        flexDirection="column"
-        justifyContent="space-between"
-      >
-        <Flex justify="center" align="center" flex="1" px={4} py={16}>
-          <Box
-            bg="white"
-            p={10}
-            borderRadius="2xl"
-            boxShadow="0 4px 20px rgba(4, 90, 171, 0.2)"
-            border="1px solid"
-            borderColor="gray.100"
-            maxW="600px"
-            w="100%"
-            textAlign="center"
-          >
-            {/* Friendly avatar */}
-            <Image
-              src="/assets/images/franc_avatar.jpg"
-              alt="Franc Avatar"
-              boxSize="100px"
-              objectFit="cover"
-              borderRadius="full"
-              mx="auto"
-              mb={4}
-              transition="transform 0.3s"
-              _hover={{ transform: "scale(1.05)" }}
-            />
+  Box,
+  Button,
+  Flex,
+  FormLabel,
+  Heading,
+  Icon,
+  Input,
+  Progress,
+  Text,
+  VStack,
+  useToast,
+  Image,
+  InputRightElement,
+  InputGroup,
+} from '@chakra-ui/react';
+import { AttachmentIcon, CheckIcon } from '@chakra-ui/icons';
+import { useRef, useState } from 'react';
+import Footer from '../../components/Footer';
 
-            <Heading size="lg" mb={2}>
-              Upload Your Resume
-            </Heading>
+const FrancResumeUpload = () => {
+  const inputRef = useRef(null);
+  const toast = useToast();
+  const [file, setFile] = useState(null);
+  const [step, setStep] = useState(1);
+  const [progress, setProgress] = useState(50);
 
-            <Box
-            mt={8}
-            px={6}
-            py={4}
-            textAlign="center"
-            bg="gray.50"
-            borderRadius="2xl"
-            >
-            <Heading size="md" mb={4} color="gray.700">
-                📌 Resume Tips from Franc
-            </Heading>
-            <VStack spacing={3} color="gray.600" fontSize="md">
-                <Text>✅ Keep it to <b>1 page</b></Text>
-                <Text>🎯 Tailor it to <b>each job/internship</b></Text>
-                <Text>🧹 Keep it <b>clean and readable</b></Text>
-            </VStack>
-            </Box>
+  const handleFileChange = (e) => {
+    const selected = e.target.files[0];
+    if (selected && selected.type !== 'application/pdf') {
+      toast({
+        title: 'Invalid file type',
+        description: 'Only PDF files are allowed.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      e.target.value = null;
+      setFile(null);
+    } else {
+      setFile(selected);
+    }
+  };
 
-            
-            <Text fontSize="md" color="gray.600" mb={6}>
-              Let Franc help you evaluate your CV following international standards!
-            </Text>
-  
+  const handleNext = () => {
+    if (file) {
+      setStep(2);
+      setProgress(100);
+    } else {
+      toast({
+        title: 'No file selected',
+        description: 'Please upload a PDF before proceeding.',
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const handleBack = () => {
+    setStep(1);
+    setProgress(50);
+  };
+
+  return (
+    <Box
+      minH="100vh"
+      bgGradient="linear(to-r, white, #ebf8ff)"
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+    >
+      <Flex justify="center" align="center" flex="1" px={4} py={16}>
+        <Box
+          bg="white"
+          p={10}
+          borderRadius="2xl"
+          boxShadow="lg"
+          border="1px solid"
+          borderColor="gray.100"
+          maxW="600px"
+          w="100%"
+          textAlign="center"
+        >
+          <Image
+            src="/assets/images/franc_avatar.jpg"
+            alt="Franc Avatar"
+            boxSize="100px"
+            objectFit="cover"
+            borderRadius="full"
+            mx="auto"
+            mb={4}
+            transition="transform 0.3s"
+            _hover={{ transform: 'scale(1.05)' }}
+          />
+
+          <Heading size="lg" mb={4}>
+            Upload Your Resume
+          </Heading>
+
+          <Progress value={progress} size="sm" colorScheme="brand" mb={6} borderRadius="md" />
+
+          {step === 1 && (
             <VStack spacing={5}>
+              <Box
+                px={6}
+                py={4}
+                textAlign="center"
+                bg="gray.50"
+                borderRadius="2xl"
+                w="full"
+              >
+                <Heading size="md" mb={4} color="gray.700">
+                  📌 Resume Tips from Franc
+                </Heading>
+                <VStack spacing={2} color="gray.600" fontSize="md">
+                  <Text>✅ Keep it to <b>1 page</b></Text>
+                  <Text>🎯 Tailor it to <b>each job/internship</b></Text>
+                  <Text>🧹 Keep it <b>clean and readable</b></Text>
+                </VStack>
+              </Box>
+
               <FormLabel htmlFor="cv-upload" fontWeight="bold" w="100%" textAlign="left">
                 PDF File Only
               </FormLabel>
-  
+
               <Button
                 leftIcon={<Icon as={AttachmentIcon} />}
                 colorScheme="brand"
@@ -109,9 +133,9 @@ import {
                 onClick={() => inputRef.current.click()}
                 w="full"
               >
-                {fileName ? fileName : 'Select PDF File'}
+                {file ? file.name : 'Select PDF File'}
               </Button>
-  
+
               <Input
                 ref={inputRef}
                 type="file"
@@ -120,17 +144,25 @@ import {
                 display="none"
                 onChange={handleFileChange}
               />
-  
+
               <Button
-                colorScheme="teal"
-                size="md"
-                isDisabled={!fileName}
+                leftIcon={<CheckIcon />}
+                colorScheme="green"
+                variant="solid"
                 w="full"
+                onClick={handleNext}
               >
-                Submit for Evaluation
+                Submit
               </Button>
-  
-              {/* Placeholder for feedback */}
+            </VStack>
+          )}
+
+          {step === 2 && (
+            <VStack spacing={6}>
+              <Text color="gray.600" fontSize="md">
+                Franc will evaluate your resume based on international standards.
+              </Text>
+
               <Box
                 bg="gray.50"
                 p={5}
@@ -142,16 +174,24 @@ import {
                 fontSize="sm"
                 color="gray.600"
               >
-                {/* API response placeholder */}
-                Feedback will appear here after submitting your resume.
+                ✅ Your resume is now submitted! Franc will review and provide feedback soon.
               </Box>
+
+              <Button
+                variant="ghost"
+                colorScheme="gray"
+                onClick={handleBack}
+              >
+                Back
+              </Button>
             </VStack>
-          </Box>
-        </Flex>
-        <Footer />
-      </Box>
-    );
-  };
-  
-  export default ResumeTryPage;
-  
+          )}
+        </Box>
+      </Flex>
+
+      <Footer />
+    </Box>
+  );
+};
+
+export default FrancResumeUpload;

@@ -17,7 +17,7 @@ const AboutUsPage = () => {
       <Flex justify="center" align="center" flex="1" px={{ base: 4, md: 8 }} py={{ base: 8, md: 16 }} gap={{ base: 6, md: 10 }} flexWrap="wrap" backdropFilter="blur(10px)" boxShadow="lg" borderRadius="md" border="1px solid #ddd">
         <Box flex={{ base: "1 1 100%", md: "1" }} display="flex" justifyContent="center">
           <Image
-            src="/assets/images/Ab.svg"
+            src="/assets/images/about_us.svg"
             alt="Team Illustration"
             maxW="400px"
             w="100%"

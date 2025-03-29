@@ -13,14 +13,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@chakra-ui/icon": "^3.2.0",
     "@chakra-ui/icons": "^2.2.4",
     "@chakra-ui/react": "^2.10.7",
+    "@chakra-ui/react-context": "^2.1.0",
     "@chakra-ui/theme-utils": "^2.0.21",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "chakra-ui-steps": "^2.2.0",
     "framer-motion": "^12.6.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^5.5.0",
     "react-router-dom": "^7.4.0",
     "react-scripts": "^5.0.1",
     "web-vitals": "^4.2.4"
