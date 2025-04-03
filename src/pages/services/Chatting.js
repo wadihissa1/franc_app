@@ -26,8 +26,8 @@ const ChatBubble = ({ message, isUser }) => (
       minW="20%"
       wordBreak="break-word"
     >
-      <Text>{message}</Text>
-    </Box>
+      <Text whiteSpace="pre-wrap">{message}</Text> {/* <-- This enables \n line breaks */}
+      </Box>
   </Flex>
 );
 

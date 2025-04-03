@@ -10,8 +10,9 @@ import {
   VisuallyHidden,
 } from '@chakra-ui/react';
 import { FaGithub, FaInstagram, FaLinkedin } from 'react-icons/fa';
-import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
+import { Link as ChakraLink } from '@chakra-ui/react';
+
 
 const Logo = () => (
   <Link to="/">
@@ -82,19 +83,38 @@ export default function Footer() {
           justify={{ base: 'center', md: 'space-between' }}
           align={{ base: 'center', md: 'center' }}
         >
-          <Text>
-            © {new Date().getFullYear()} Franc Platform. All rights reserved.
-            <br />
-            Built by <strong>Wadih Issa</strong> & <strong>Rani Hijazi</strong>
-          </Text>
+         <Text textAlign="center">
+          © {new Date().getFullYear()} Franc Platform. All rights reserved.
+          <br />
+          Built by{' '}
+          <ChakraLink
+            href="https://www.linkedin.com/in/wadih-issa-6b2a801a8/"
+            isExternal
+            color="brand.500"
+            fontWeight="bold"
+          >
+            Wadih Issa
+          </ChakraLink>{' '}
+          &{' '}
+          <ChakraLink
+            href="https://www.linkedin.com/in/rani-hijazi-903181270/"
+            isExternal
+            color="brand.500"
+            fontWeight="bold"
+          >
+            Rani Hijazi
+          </ChakraLink>
+        </Text>
+
+
           <Stack direction={'row'} spacing={6}>
-            <SocialButton label={'LinkedIn'} href="https://linkedin.com/">
+            <SocialButton label={'LinkedIn'} href="https://www.linkedin.com/school/uantonine/">
               <FaLinkedin />
             </SocialButton>
-            <SocialButton label={'GitHub'} href="https://github.com/">
+            <SocialButton label={'GitHub'} href="https://github.com/wadihissa1">
               <FaGithub />
             </SocialButton>
-            <SocialButton label={'Instagram'} href="https://instagram.com/">
+            <SocialButton label={'Instagram'} href="https://www.instagram.com/ua_ccd/">
               <FaInstagram />
             </SocialButton>
           </Stack>

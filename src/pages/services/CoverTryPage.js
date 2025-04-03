@@ -267,8 +267,8 @@ const CoverTryPage = () => {
               {evaluationResult && (
                 <Box bg="gray.50" p={5} borderRadius="lg" border="1px solid" borderColor="gray.200" w="full" textAlign="left" fontSize="sm" color="gray.600">
                   <Heading size="md" mb={4}>Evaluation Result:</Heading>
-                  <Text>{evaluationResult}</Text>
-                </Box>
+                  <Text whiteSpace="pre-wrap">{evaluationResult}</Text>
+                  </Box>
               )}
             </VStack>
           )}

@@ -24,6 +24,8 @@ import {
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import UserProfileEdit from '../components/UserProfileEdit';
 import { AuthContext } from '../components/AuthContext'; // Import AuthContext
+import { FaUser } from 'react-icons/fa';
+
 
 const Navbar = () => {
   const { isOpen: isMenuOpen, onToggle: onMenuToggle } = useDisclosure();
@@ -105,22 +107,12 @@ const Navbar = () => {
             <>
               <Avatar
                 size="sm"
-                name="User"
-                bg="brand.100"
+                icon={<FaUser fontSize="0.85rem" />}
+                bg="brand.500"
                 color="white"
                 cursor="pointer"
                 onClick={onProfileOpen}
               />
-              <Button
-                fontSize={'sm'}
-                fontWeight={600}
-                color={'white'}
-                bg={'red.500'}
-                _hover={{ bg: 'red.600' }}
-                onClick={handleLogout}
-              >
-                Logout
-              </Button>
             </>
           )}
         </Flex>
@@ -133,7 +125,7 @@ const Navbar = () => {
           <ModalHeader>Edit Profile</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <UserProfileEdit />
+          <UserProfileEdit onClose={onProfileClose} onLogout={handleLogout}/>
           </ModalBody>
         </ModalContent>
       </Modal>

@@ -18,7 +18,7 @@ const teamMembers = [
     role: "CCD Director",
     image: "/assets/images/Fouad.jpg",
     description: "Leading the CCD Department.",
-    linkedin: "https://www.linkedin.com/in/fouad-abdallah",
+    linkedin: "https://www.linkedin.com/in/fouad-r-abdallah/",
     badges: ["Leadership", "CCD"],
   },
   {
@@ -26,7 +26,7 @@ const teamMembers = [
     role: "CCD Officer",
     image: "/assets/images/Elie.jpg",
     description: "Facilitating collaboration between CCD and CS.",
-    linkedin: "https://www.linkedin.com/in/elienajem",
+    linkedin: "https://www.linkedin.com/in/elienajm/",
     badges: ["CCD", "Advising"],
   },
   {
@@ -34,7 +34,7 @@ const teamMembers = [
     role: "Head of CS Department",
     image: "/assets/images/Charbel.jpg",
     description: "Supervising the development of Franc.",
-    linkedin: "https://www.linkedin.com/in/charbelgemayel",
+    linkedin: "https://www.linkedin.com/in/charbel-el-gemayel-1105ab203/",
     badges: ["Supervision", "Academic"],
   },
   {
@@ -42,7 +42,7 @@ const teamMembers = [
     role: "Developer",
     image: "/assets/images/Rani Hijazi.jpg",
     description: "One of the developers behind the Franc project.",
-    linkedin: "https://www.linkedin.com/in/ranihijazi",
+    linkedin: "https://www.linkedin.com/in/rani-hijazi-903181270/",
     badges: ["React", "AI", "Backend"],
   },
   {
@@ -50,7 +50,7 @@ const teamMembers = [
     role: "Developer",
     image: "/assets/images/Wadih Issa.jpg",
     description: "One of the developers behind the Franc project.",
-    linkedin: "https://www.linkedin.com/in/wadihissa",
+    linkedin: "https://www.linkedin.com/in/wadih-issa-6b2a801a8/",
     badges: ["Frontend", "UI/UX", "AI"],
   },
 ];
