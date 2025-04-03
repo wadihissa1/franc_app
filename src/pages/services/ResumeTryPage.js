@@ -13,8 +13,7 @@ import {
   VStack,
   useToast,
   Image,
-  InputRightElement,
-  InputGroup,
+  Spinner,
 } from '@chakra-ui/react';
 import { AttachmentIcon, CheckIcon } from '@chakra-ui/icons';
 import { useRef, useState } from 'react';
@@ -26,6 +25,8 @@ const FrancResumeUpload = () => {
   const [file, setFile] = useState(null);
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(50);
+  const [loading, setLoading] = useState(false);
+  const [evaluationResult, setEvaluationResult] = useState(null);
 
   const handleFileChange = (e) => {
     const selected = e.target.files[0];
@@ -44,11 +45,8 @@ const FrancResumeUpload = () => {
     }
   };
 
-  const handleNext = () => {
-    if (file) {
-      setStep(2);
-      setProgress(100);
-    } else {
+  const handleNext = async () => {
+    if (!file) {
       toast({
         title: 'No file selected',
         description: 'Please upload a PDF before proceeding.',
@@ -56,7 +54,47 @@ const FrancResumeUpload = () => {
         duration: 3000,
         isClosable: true,
       });
+      return;
     }
+
+    setLoading(true);
+    setProgress(75);
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch('http://192.168.0.105:5000/evaluate_cv', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setEvaluationResult(data.evaluation_result);
+        setStep(2);
+        setProgress(100);
+      } else {
+        toast({
+          title: 'Evaluation failed',
+          description: data.error || 'Something went wrong',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Network error',
+        description: 'Unable to connect to the server',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+
+    setLoading(false);
   };
 
   const handleBack = () => {
@@ -146,13 +184,14 @@ const FrancResumeUpload = () => {
               />
 
               <Button
-                leftIcon={<CheckIcon />}
+                leftIcon={loading ? <Spinner size="sm" /> : <CheckIcon />}
                 colorScheme="green"
                 variant="solid"
                 w="full"
                 onClick={handleNext}
+                isDisabled={loading}
               >
-                Submit
+                {loading ? 'Submitting...' : 'Submit'}
               </Button>
             </VStack>
           )}
@@ -160,22 +199,27 @@ const FrancResumeUpload = () => {
           {step === 2 && (
             <VStack spacing={6}>
               <Text color="gray.600" fontSize="md">
-                Franc will evaluate your resume based on international standards.
+                Franc has evaluated your resume.
               </Text>
 
-              <Box
-                bg="gray.50"
-                p={5}
-                borderRadius="lg"
-                border="1px solid"
-                borderColor="gray.200"
-                w="full"
-                textAlign="left"
-                fontSize="sm"
-                color="gray.600"
-              >
-                ✅ Your resume is now submitted! Franc will review and provide feedback soon.
-              </Box>
+              {evaluationResult ? (
+                <Box
+                  bg="gray.50"
+                  p={5}
+                  borderRadius="lg"
+                  border="1px solid"
+                  borderColor="gray.200"
+                  w="full"
+                  textAlign="left"
+                  fontSize="sm"
+                  color="gray.600"
+                  whiteSpace="pre-wrap"
+                >
+                  {evaluationResult}
+                </Box>
+              ) : (
+                <Spinner size="lg" />
+              )}
 
               <Button
                 variant="ghost"

@@ -13,6 +13,7 @@ import {
   useToast,
   Image,
   Progress,
+  Spinner,
 } from '@chakra-ui/react';
 import { AttachmentIcon, CheckIcon } from '@chakra-ui/icons';
 import { useRef, useState } from 'react';
@@ -27,13 +28,16 @@ const CoverTryPage = () => {
   const [jobAdFile, setJobAdFile] = useState(null);
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(33.3);
+  const [evaluationResult, setEvaluationResult] = useState(null); // Store evaluation result
+  const [loading, setLoading] = useState(false); 
 
-  const handleFileChange = (e, setFile) => {
+  const handleFileChange = (e, setFile, allowedType, fileTypeMessage) => {
     const file = e.target.files[0];
-    if (file && file.type !== 'application/pdf') {
+
+    if (file && file.type !== allowedType) {
       toast({
         title: 'Invalid file type',
-        description: 'Only PDF files are allowed.',
+        description: fileTypeMessage,
         status: 'error',
         duration: 3000,
         isClosable: true,
@@ -49,7 +53,7 @@ const CoverTryPage = () => {
     if (!coverLetterFile) {
       toast({
         title: 'Missing Cover Letter',
-        description: 'Please upload a cover letter to continue.',
+        description: 'Please upload a .docx cover letter to continue.',
         status: 'warning',
         duration: 3000,
         isClosable: true,
@@ -60,17 +64,63 @@ const CoverTryPage = () => {
     setProgress(66.6);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!jobAdFile) {
       toast({
         title: 'Missing Job Ad',
-        description: 'Please upload the job advertisement.',
+        description: 'Please upload a job advertisement (PDF).',
         status: 'warning',
         duration: 3000,
         isClosable: true,
       });
       return;
     }
+
+    const formData = new FormData();
+    formData.append('file', coverLetterFile);
+    formData.append('job_ad', jobAdFile);
+    setLoading(true);
+
+    try {
+      const response = await fetch('http://192.168.0.105:5000/evaluate_cover_letter', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast({
+          title: 'Evaluation Complete',
+          description: 'Your cover letter has been analyzed successfully!',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+
+        // Store the evaluation result in the state
+        setEvaluationResult(data.evaluation_result);
+      } else {
+        toast({
+          title: 'Evaluation Failed',
+          description: data.error || 'Something went wrong!',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      console.error('Error submitting files:', error);
+      toast({
+        title: 'Network Error',
+        description: 'Failed to connect to the server.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+
+    setLoading(false);
     setStep(3);
     setProgress(100);
   };
@@ -120,13 +170,7 @@ const CoverTryPage = () => {
 
           {step === 1 && (
             <VStack spacing={5} align="stretch">
-              <Box
-                px={6}
-                py={4}
-                textAlign="center"
-                bg="gray.50"
-                borderRadius="2xl"
-              >
+              <Box px={6} py={4} textAlign="center" bg="gray.50" borderRadius="2xl">
                 <Heading size="md" mb={4} color="gray.700">
                   📄 Cover Letter Tips
                 </Heading>
@@ -137,27 +181,30 @@ const CoverTryPage = () => {
                 </VStack>
               </Box>
 
-              <FormLabel fontWeight="bold">Upload Cover Letter (PDF)</FormLabel>
+              <FormLabel fontWeight="bold">Upload Cover Letter (.docx)</FormLabel>
               <Button
                 leftIcon={<Icon as={AttachmentIcon} />}
                 colorScheme="brand"
                 onClick={() => coverLetterRef.current.click()}
               >
-                {coverLetterFile ? coverLetterFile.name : 'Select Cover Letter PDF'}
+                {coverLetterFile ? coverLetterFile.name : 'Select Cover Letter (.docx)'}
               </Button>
               <Input
                 ref={coverLetterRef}
                 type="file"
-                accept=".pdf"
+                accept=".docx"
                 display="none"
-                onChange={(e) => handleFileChange(e, setCoverLetterFile)}
+                onChange={(e) =>
+                  handleFileChange(
+                    e,
+                    setCoverLetterFile,
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'Only .docx files are allowed for the Cover Letter.'
+                  )
+                }
               />
 
-              <Button
-                leftIcon={<CheckIcon />}
-                colorScheme="green"
-                onClick={handleNext}
-              >
+              <Button leftIcon={<CheckIcon />} colorScheme="green" onClick={handleNext}>
                 Next
               </Button>
             </VStack>
@@ -165,13 +212,7 @@ const CoverTryPage = () => {
 
           {step === 2 && (
             <VStack spacing={5} align="stretch">
-              <Box
-                px={6}
-                py={4}
-                textAlign="center"
-                bg="gray.50"
-                borderRadius="2xl"
-              >
+              <Box px={6} py={4} textAlign="center" bg="gray.50" borderRadius="2xl">
                 <Heading size="md" mb={4} color="gray.700">
                   📰 Job Ad Tips
                 </Heading>
@@ -188,22 +229,27 @@ const CoverTryPage = () => {
                 colorScheme="brand"
                 onClick={() => jobAdRef.current.click()}
               >
-                {jobAdFile ? jobAdFile.name : 'Select Job Ad PDF'}
+                {jobAdFile ? jobAdFile.name : 'Select Job Ad (PDF)'}
               </Button>
               <Input
                 ref={jobAdRef}
                 type="file"
                 accept=".pdf"
                 display="none"
-                onChange={(e) => handleFileChange(e, setJobAdFile)}
+                onChange={(e) =>
+                  handleFileChange(e, setJobAdFile, 'application/pdf', 'Only PDF files are allowed for the Job Ad.')
+                }
               />
 
               <Button
-                leftIcon={<CheckIcon />}
+                leftIcon={loading ? <Spinner size="sm" /> : <CheckIcon />}
                 colorScheme="green"
+                variant="solid"
+                w="full"
                 onClick={handleSubmit}
+                isDisabled={loading}
               >
-                Submit
+                {loading ? 'Submitting...' : 'Submit'}
               </Button>
             </VStack>
           )}
@@ -213,19 +259,17 @@ const CoverTryPage = () => {
               <Text color="gray.600" fontSize="md">
                 Franc is reviewing your cover letter and job ad for alignment and clarity.
               </Text>
-              <Box
-                bg="gray.50"
-                p={5}
-                borderRadius="lg"
-                border="1px solid"
-                borderColor="gray.200"
-                w="full"
-                textAlign="left"
-                fontSize="sm"
-                color="gray.600"
-              >
+              <Box bg="gray.50" p={5} borderRadius="lg" border="1px solid" borderColor="gray.200" w="full" textAlign="left" fontSize="sm" color="gray.600">
                 ✅ Your documents have been submitted! Franc will provide insights shortly.
               </Box>
+              
+              {/* Display Evaluation Result */}
+              {evaluationResult && (
+                <Box bg="gray.50" p={5} borderRadius="lg" border="1px solid" borderColor="gray.200" w="full" textAlign="left" fontSize="sm" color="gray.600">
+                  <Heading size="md" mb={4}>Evaluation Result:</Heading>
+                  <Text>{evaluationResult}</Text>
+                </Box>
+              )}
             </VStack>
           )}
 

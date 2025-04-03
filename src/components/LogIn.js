@@ -14,12 +14,15 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../components/AuthContext'; // Import AuthContext
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate(); // Initialize useNavigate
 
   const handleSubmit = async (e) => {
@@ -41,6 +44,7 @@ const Login = () => {
         throw new Error(data.message || 'Invalid credentials');
       }
 
+      login();
       // If sign-in is successful, navigate to the home page
       navigate('/');
     } catch (err) {

@@ -16,30 +16,35 @@ import SignUp from './components/SignUp';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 import OTPVerification from './components/OTPVerification';
+import { AuthProvider } from './components/AuthContext';
 
 
 const App = () => {
   return (
+  
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/franc" element={<FrancPage />} />
-        <Route path="/about-us" element={<AboutUsPage />} />
-        <Route path="/contact-us" element={<ContactUsPage />} />
-        <Route path="/resume-evaluation" element={<ResumePage />} />
-        <Route path="/chatting" element={<ChattingPage />} />
-        <Route path="/cover-letter-evaluation" element={<CoverLetterPage />} />
-        <Route path="/resume-evaluation/try" element={<ResumeTryPage />} />
-        <Route path="/cover-letter-evaluation/try" element={<CoverTryPage />} />
-        <Route path="/chat-franc" element={<Chatting />} />
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/OTP-Verification" element={<OTPVerification />} />
-      </Routes>
+      <AuthProvider>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/franc" element={<FrancPage />} />
+          <Route path="/about-us" element={<AboutUsPage />} />
+          <Route path="/contact-us" element={<ContactUsPage />} />
+          <Route path="/resume-evaluation" element={<ResumePage />} />
+          <Route path="/chatting" element={<ChattingPage />} />
+          <Route path="/cover-letter-evaluation" element={<CoverLetterPage />} />
+          <Route path="/resume-evaluation/try" element={<ResumeTryPage />} />
+          <Route path="/cover-letter-evaluation/try" element={<CoverTryPage />} />
+          <Route path="/chat-franc" element={<Chatting />} />
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/OTP-Verification" element={<OTPVerification />} />
+        </Routes>
+      </AuthProvider>
     </Router>
+  
   );
 };
 

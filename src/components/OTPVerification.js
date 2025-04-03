@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {
   Box,
   HStack,
@@ -9,12 +9,15 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import { useLocation, useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
+import { useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../components/AuthContext"; // Import AuthContext
 
 const OTPVerification = () => {
   const location = useLocation(); // Access the location object to get the passed state
   const navigate = useNavigate(); // Initialize useNavigate
   const { email } = location.state || {}; // Destructure email from location.state
+
+  const { login } = useContext(AuthContext); // Get login function from AuthContext
 
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
@@ -51,6 +54,12 @@ const OTPVerification = () => {
         duration: 3000,
         isClosable: true,
       });
+
+      // Call login function
+    login(); // Update login state in AuthContext
+    console.log("Login function called!");
+
+    
 
       // Redirect to home page
       navigate("/");
