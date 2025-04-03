@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
   Flex,
@@ -23,18 +23,28 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import UserProfileEdit from '../components/UserProfileEdit';
+import { AuthContext } from '../components/AuthContext'; // Import AuthContext
+import { FaUser } from 'react-icons/fa';
+
 
 const Navbar = () => {
-  const {
-    isOpen: isMenuOpen,
-    onToggle: onMenuToggle,
-  } = useDisclosure();
+  const { isOpen: isMenuOpen, onToggle: onMenuToggle } = useDisclosure();
+  const { isOpen: isProfileOpen, onOpen: onProfileOpen, onClose: onProfileClose } = useDisclosure();
+  const navigate = useNavigate();
 
-  const {
-    isOpen: isProfileOpen,
-    onOpen: onProfileOpen,
-    onClose: onProfileClose,
-  } = useDisclosure();
+  const authContext = useContext(AuthContext);
+
+  if (!authContext) {
+    console.error("AuthContext is undefined! Make sure AuthProvider is wrapping the app.");
+    return null; // Prevents breaking the entire app
+  }
+
+  const { isLoggedIn, logout } = authContext; // Access authentication state
+
+  const handleLogout = () => {
+    logout(); // Logout the user and update state
+    navigate('/login'); // Immediately navigate to login after logout
+  };
 
   return (
     <Box>
@@ -79,25 +89,9 @@ const Navbar = () => {
           <DesktopNav />
         </Flex>
 
-        {/* Right Section */}
+        {/* Right Section (Login/Profile) */}
         <Flex align="center" gap={4} position="absolute" right="1rem">
-          {/* Mobile Login */}
-          <Box display={{ base: 'flex', md: 'none' }}>
-            <Button as={Link} to="/login" size="sm" fontWeight="400" colorScheme="brand">
-              Login
-            </Button>
-          </Box>
-
-          {/* Desktop Login & Profile Avatar */}
-          <Box display={{ base: 'none', md: 'flex' }} alignItems="center" gap={3}>
-          <Avatar
-              size="sm"
-              name="User"
-              bg="brand.100"       
-              color="white"        
-              cursor="pointer"
-              onClick={onProfileOpen}
-            />
+          {!isLoggedIn ? (
             <Button
               as={Link}
               to="/login"
@@ -109,7 +103,18 @@ const Navbar = () => {
             >
               Login
             </Button>
-          </Box>
+          ) : (
+            <>
+              <Avatar
+                size="sm"
+                icon={<FaUser fontSize="0.85rem" />}
+                bg="brand.500"
+                color="white"
+                cursor="pointer"
+                onClick={onProfileOpen}
+              />
+            </>
+          )}
         </Flex>
       </Flex>
 
@@ -120,7 +125,7 @@ const Navbar = () => {
           <ModalHeader>Edit Profile</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <UserProfileEdit />
+          <UserProfileEdit onClose={onProfileClose} onLogout={handleLogout}/>
           </ModalBody>
         </ModalContent>
       </Modal>
