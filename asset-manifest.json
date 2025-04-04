@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/franc_app/static/js/main.00c05d08.js",
+    "main.js": "/franc_app/static/js/main.4cbdbeb2.js",
     "index.html": "/franc_app/index.html",
-    "main.00c05d08.js.map": "/franc_app/static/js/main.00c05d08.js.map"
+    "main.4cbdbeb2.js.map": "/franc_app/static/js/main.4cbdbeb2.js.map"
   },
   "entrypoints": [
-    "static/js/main.00c05d08.js"
+    "static/js/main.4cbdbeb2.js"
   ]
 }
